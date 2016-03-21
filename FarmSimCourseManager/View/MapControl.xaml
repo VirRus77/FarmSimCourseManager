@@ -1,0 +1,176 @@
+﻿<UserControl x:Class="FarmSimCourseManager.View.MapControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:FarmSimCourseManager.Tools.Controls"
+             xmlns:viewModel="clr-namespace:FarmSimCourseManager.ViewModel"
+             xmlns:converters="clr-namespace:FarmSimCourseManager.Tools.Converters"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d po" 
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModel:MapControlViewModel}">
+    <UserControl.Resources>
+        <converters:BitmapToImageSourceCoinverter x:Key="BitmapToImageSourceCoinverter"/>
+        <converters:CoursePositionItemToPathConverter x:Key="CourseToPathConverter"/>
+        <converters:CourseToPositionItemConverter x:Key="CourseToPositionItemConverter"/>
+        <converters:CourseToPointItemConverter x:Key="CourseToPointItemConverter"/>
+        <converters:MoveConverter x:Key="MoveConverter"/>
+        <converters:AntiScaleConverter x:Key="AntiScaleConverter"/>
+        <system:Double x:Key="Stroke">1.5</system:Double>
+        <system:Int32 x:Key="CircleRadius">3</system:Int32>
+        <!--<system:Double x:Key="ImageSize">2050</system:Double>-->
+
+    </UserControl.Resources>
+    <Grid>
+        <controls:BrowserControl x:Name="BrowserControl" Background="Bisque" ZoomPow="1.25" MaxZoomIn="20">
+            <!--<controls:BrowserControl.Resources>
+            <ResourceDictionary>
+                <Style TargetType="Path">
+                    <Setter Property="Stroke" Value="Red"/>
+                    <Setter Property="StrokeThickness" Value="2"/>
+                </Style>
+            </ResourceDictionary>
+        </controls:BrowserControl.Resources>-->
+            <controls:BrowserControl.MovedScaleElement>
+                <Canvas>
+                    <Image Source="{Binding Path=MapImage, Converter={StaticResource BitmapToImageSourceCoinverter}, Mode=OneWay}" 
+                        RenderOptions.BitmapScalingMode="NearestNeighbor"
+                        Width="{Binding Path=MapImage.Width, Mode=OneWay}"
+                        Height="{Binding Path=MapImage.Height, Mode=OneWay}" 
+                        Canvas.Left="{Binding Path=MapImage.Width, Converter={StaticResource MoveConverter}, Mode=OneWay}"
+                        Canvas.Top="{Binding Path=MapImage.Height, Converter={StaticResource MoveConverter}, Mode=OneWay}" 
+                           />
+                    <!--<controls:DrawMap
+                        Stroke="Red"
+                        Scale ="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                        StrokeThickness="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource Stroke}, Mode=OneWay}"
+                        CourseFileModel="{Binding Path=CourseFileModel}">
+                    </controls:DrawMap>-->
+                    <!--StrokeThickness="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource Stroke}, Mode=OneWay}"-->
+
+                    <ItemsControl ItemsSource="{Binding Path=CourseFileModel.Courses}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas>
+                                    <controls:DrawCourse
+                                        Scale="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                                        CourseModel="{Binding}"
+                                        IsVisible="{Binding Path=IsChecked}"
+                                        MapSettings="{Binding Path=DataContext.Settings.MapSettings, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                                        ></controls:DrawCourse>
+
+                                    <controls:DrawPointCourse
+                                        Scale="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                                        CourseModel="{Binding}"
+                                        IsVisible="{Binding Path=IsChecked}"
+                                        MapSettings="{Binding Path=DataContext.Settings.MapSettings, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                                        >
+                                    </controls:DrawPointCourse>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!--<controls:DarawPanel>
+                        <controls:PositionItems HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Path=Courses, Converter={StaticResource CourseToPositionItemConverter}, Mode=OneWay}">
+                            <controls:PositionItems.Resources>
+                                <ResourceDictionary>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Stroke">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="Red" po:Freeze="True"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        -->
+                    <!--<Setter Property="StrokeThickness" Value="1"/>-->
+                    <!--
+                                        <Setter Property="StrokeThickness" Value="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource Stroke}, Mode=OneWay}"/>
+                                    </Style>
+                                </ResourceDictionary>
+                            </controls:PositionItems.Resources>
+                            <controls:PositionItems.ItemTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding Converter={StaticResource CourseToPathConverter}, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </controls:PositionItems.ItemTemplate>
+                        </controls:PositionItems>
+                        <controls:PositionItems HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Path=Courses, Converter={StaticResource CourseToPointItemConverter}, Mode=OneWay}">
+                            <controls:PositionItems.Resources>
+                                <ResourceDictionary>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Stroke">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="Blue" po:Freeze="True"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="StrokeThickness" Value="1"/>
+                                        -->
+                    <!--<Setter Property="StrokeThickness" Value="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource Stroke}, Mode=OneWay}"/>-->
+                    <!--
+                                    </Style>
+                                </ResourceDictionary>
+                            </controls:PositionItems.Resources>
+                            <controls:PositionItems.ItemTemplate>
+                                <DataTemplate >
+                                    <Path d:DataContext="{d:DesignInstance model:WaypointPositionItem}" >
+                                        -->
+                    <!-- Data="M -1,0 A 1,1 0 1 1 1,0 M -1,0 A 1,1 0 1 0 1,0" -->
+                    <!--
+                                        <Path.Data>
+                                            <EllipseGeometry 
+                                            Center="0,0" 
+                                            RadiusX="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource CircleRadius}, Mode=OneWay}"
+                                            RadiusY="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource CircleRadius}, Mode=OneWay}"/>
+                                        </Path.Data>
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Setter Property="Stroke">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Color="Blue"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="StrokeThickness" Value="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}, Converter={StaticResource AntiScaleConverter}, ConverterParameter={StaticResource Stroke}, Mode=OneWay}"/>
+                                            </Style>
+                                        </Path.Style>
+                                        -->
+                    <!--<GeometryDrawing Geometry="M -1,0 A 1,1 0 1 1 1,0 M -1,0 A 1,1 0 1 0 1,0"/>-->
+                    <!--<Path.Data>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure StartPoint="{Binding Path=Value.Position}" IsClosed="True">
+                                                    <LineSegment IsStroked="True" Point="100,100"></LineSegment>
+                                                </PathFigure> 
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Path.Data>-->
+                    <!--
+                                    </Path>
+                                    -->
+                    <!--<ContentControl Content="{Binding Path=Value.Waypoints, Converter={StaticResource CourseToPathConverter}, Mode=OneWay}" />-->
+                    <!--
+                                </DataTemplate>
+                            </controls:PositionItems.ItemTemplate>
+                        </controls:PositionItems>
+                    </controls:DarawPanel>-->
+                </Canvas>
+            </controls:BrowserControl.MovedScaleElement>
+            <!--<controls:BrowserControl.MovedElement>
+                <controls:DrawTest
+                        Stroke="Red"
+                        Scale ="{Binding Path=Scale, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=controls:BrowserControl}}"
+                        StrokeThickness="{StaticResource Stroke}"
+                        CourseFileModel="{Binding Path=CourseFileModel}">
+                </controls:DrawTest>
+            </controls:BrowserControl.MovedElement>-->
+        </controls:BrowserControl>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                   ><Run Text="{Binding Path=CursorX, ElementName=BrowserControl, StringFormat='0.00', Mode=OneWay}"
+                   /><Run Text=" "
+                         /><Run Text="{Binding Path=CursorY, ElementName=BrowserControl, StringFormat='0.00', Mode=OneWay}"
+                         /><Run Text=" "
+                         /><Run Text="{Binding Path=Scale, ElementName=BrowserControl, StringFormat='0.0000', Mode=OneWay}"
+                         /></TextBlock>
+    </Grid>
+</UserControl>

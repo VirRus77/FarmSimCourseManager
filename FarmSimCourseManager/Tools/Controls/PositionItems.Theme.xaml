@@ -1,0 +1,33 @@
+﻿<ResourceDictionary
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:FarmSimCourseManager.Tools.Controls"
+        xmlns:tools="clr-namespace:FarmSimCourseManager.Tools">
+    
+    <Style TargetType="controls:PositionItems">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:PositionItems">
+                    <ItemsControl VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                            ItemsSource="{TemplateBinding Property=ItemsSource}" Background="Transparent">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="controls:IPositionItem">
+                                <Canvas>
+                                    <ContentControl Canvas.Left="{Binding Path=Position.X}" Canvas.Top="{Binding Path=Position.Y}"
+                                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                            Content="{Binding}"
+                                            ContentTemplate="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=controls:PositionItems}, Path=ItemTemplate}" />
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

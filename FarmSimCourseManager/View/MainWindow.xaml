@@ -1,0 +1,110 @@
+﻿<Window x:Class="FarmSimCourseManager.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModel="clr-namespace:FarmSimCourseManager.ViewModel"
+        xmlns:regions="http://www.codeplex.com/CompositeWPF"
+        xmlns:regionsName="clr-namespace:FarmSimCourseManager.Contracts"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="350"
+        Width="925"
+        SnapsToDevicePixels="True"
+        WindowState="Maximized"
+        d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/FarmSimCourseManager;component/Styles/Images.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
+        </Grid.RowDefinitions>
+        <!--<Menu>
+            <MenuItem Header="File">
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+        </Menu>-->
+        <ToolBarPanel IsManipulationEnabled="False" Orientation="Horizontal">
+            <ToolBar>
+                <Button DataContext="{Binding Path=OpenMenu}" Command="{Binding Path=Command, Mode=OneWay}">
+                    <Image Source="{StaticResource OpenImage}"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button DataContext="{Binding Path=SaveMenu}" Command="{Binding Path=Command, Mode=OneWay}">
+                    <Image Source="{StaticResource SaveImage}"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button DataContext="{Binding Path=SaveAsMenu}" Command="{Binding Path=Command, Mode=OneWay}">
+                    <Image Source="{StaticResource SaveAsImage}"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button DataContext="{Binding Path=LoadMapMenu}" Command="{Binding Path=Command, Mode=OneWay}">
+                    <Image Source="{StaticResource LoadMap}"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+                <Button DataContext="{Binding Path=SettingsMenu}" Command="{Binding Path=Command, Mode=OneWay}">
+                    <Image Source="{StaticResource Settings}"/>
+                    <Button.ToolTip>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}"/>
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <Button>New</Button>
+                <Button>Open</Button>
+                <Separator></Separator>
+                <Button>Close</Button>
+            </ToolBar>
+        </ToolBarPanel>
+
+        <ad:DockingManager x:Name="dockManager" Grid.Row="1">
+            <ad:LayoutRoot>
+                <ad:LayoutPanel Orientation="Horizontal">
+                    <ad:LayoutDocumentPane>
+                        <ad:LayoutDocument CanClose="False" Title="Рабочий документ">
+                            <ContentControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" regions:RegionManager.RegionName="{x:Static regionsName:WellKnownRegions.MapRegion}" />
+                        </ad:LayoutDocument>
+                    </ad:LayoutDocumentPane>
+                    <ad:LayoutAnchorablePane DockWidth="450">
+                        <ad:LayoutAnchorable Title="Маршруты" CanClose="False">
+                            <ContentControl VerticalAlignment="Stretch" HorizontalAlignment="Stretch" regions:RegionManager.RegionName="{x:Static regionsName:WellKnownRegions.TreeViewRegion}" />
+                        </ad:LayoutAnchorable>
+                        <ad:LayoutAnchorable Title="Маршруты" CanClose="False">
+                        </ad:LayoutAnchorable>
+                    </ad:LayoutAnchorablePane>
+                </ad:LayoutPanel>
+                <ad:LayoutRoot.LeftSide>
+                    <ad:LayoutAnchorSide>
+                        <ad:LayoutAnchorGroup>
+                            <ad:LayoutAnchorable Title="Autohidden Content">
+                                <TextBox/>
+                            </ad:LayoutAnchorable>
+                        </ad:LayoutAnchorGroup>
+                    </ad:LayoutAnchorSide>
+                </ad:LayoutRoot.LeftSide>
+            </ad:LayoutRoot>
+        </ad:DockingManager>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock Text="AvalonDock 1.3 Sample Project"/>
+            </StatusBarItem>
+
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="FarmSimCourseManager.Tools.Controls.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DrawingBrush x:Key="DrawBrush">
+            <DrawingBrush.Drawing>
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Pen>
+                        <Pen Thickness="1" Brush="Red"/>
+                    </GeometryDrawing.Pen>
+                    <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="10,10" RadiusX="10" RadiusY="10"/>
+                    </GeometryDrawing.Geometry>
+                    
+                </GeometryDrawing>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </UserControl.Resources>
+    <Grid Background="Wheat">
+        <Border BorderThickness="1" BorderBrush="SeaGreen" Width="100" Height="100" Background="{StaticResource DrawBrush}">
+            
+        </Border>
+        <!--<Path Stroke="Blue" StrokeThickness="1" Data="M 50, 10 l 0 80 M 10, 50 l 80 0" >
+            </Path>
+        <Path Stroke="Red" StrokeThickness="1">
+            <Path.Data>
+                <PathGeometry>
+                    <PathGeometry.Figures>
+                        <PathFigure StartPoint="40,50">
+                            <ArcSegment Point="60,50" RotationAngle="0" Size="10,10" IsLargeArc="True" SweepDirection="Counterclockwise"></ArcSegment>
+                            <ArcSegment Point="40,50" RotationAngle="0" Size="10,10" IsLargeArc="True" SweepDirection="Counterclockwise"></ArcSegment>
+                        </PathFigure>
+                    </PathGeometry.Figures>
+                </PathGeometry>
+            </Path.Data>
+        </Path>-->
+    </Grid>
+</UserControl>
